@@ -9,6 +9,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -29,6 +31,22 @@ class MemberJpaRepositoryTest {
 
         Assertions.assertThat(member.getId()).isEqualTo(choi.getId());
         // 트랜잭션 안의 같은 엔티는 동일성을 보장한다 신기함... 처음의 만들어진 choi도 id가 있다. jpa에서의 1차 캐시를 다시 공부해보기
+
+    }
+
+    @Test
+    public void teset2() {
+        Member choi = new Member("choi", 20);
+        Member choi1 = new Member("choi", 50);
+
+        memberJpaRepository.save(choi);
+        memberJpaRepository.save(choi1);
+
+
+        List<Member> choi2 = memberJpaRepository.findByUsernameAndAgeGreaterThen("choi", 40);
+
+        System.out.println(choi2.size());
+
 
     }
 
